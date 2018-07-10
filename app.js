@@ -47,7 +47,7 @@ const gif_topics = (() => {
         e.preventDefault();
         const topic = $("#topic-input").val().trim();
         topics.push(topic);
-        this.generateBtns();
+        gif_topics.generateBtns();
       });
     },
     addFavorite: () => {
