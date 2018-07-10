@@ -1,0 +1,26 @@
+.site-container {
+  display: flex;
+}
+
+#site {
+  flex: 3;
+  margin: 20px;
+}
+
+aside {
+  flex: 1;
+  margin: 20px;
+}
+
+aside form {
+  margin-top: 200px;
+}
+
+.gifs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gif-container {
+  margin: 10px;
+}
