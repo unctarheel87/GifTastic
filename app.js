@@ -1,16 +1,7 @@
-const topics = ['tennis', 'golf', 'table tennis', 'racquetball', 'badminton'];
-
 $(document).ready(function() {
-  
-  $('#add-topic').on('click', function(e) {
-    $('header').empty();
-    e.preventDefault();
-    const topic = $("#topic-input").val().trim();
-    topics.push(topic);
-    generateBtns();
-  });
-  generateBtns();
-
+  gif_topics.generateBtns();
+  gif_topics.handleAddBtn();
+  gif_topics.addFavorite();
   $(document).on('click', '.topic-btn', displayGifInfo);
 });  
 
@@ -24,7 +15,7 @@ function displayGifInfo() {
   $.ajax({
       url: queryURL,
       method: "GET"
-    }).then(function(response) {
+    }).then((response) => {
       $('.gifs').empty();
       const data = response.data;
       for(let gif of data) {
@@ -32,17 +23,43 @@ function displayGifInfo() {
         const gifImg = $('<img>');
         const gifInfo = $('<div>');
         $('.gifs').append(gifDiv);
-        gifDiv.append(gifInfo).append(gifImg).addClass('gif-container');
+        gifDiv.append(gifInfo).append(gifImg).addClass('gif-container').data({id: gif.id, url: gif.images.fixed_height_still.url});
         gifImg.attr('src', gif.images.fixed_height_still.url);
         gifInfo.html(`<p>Rating: ${gif.rating}</p>`);
       }
     });
 }   
 
-function generateBtns() {
-  for(let topic of topics) {
-    const btn = $('<button>'); 
-    $('header').append(btn);
-    btn.text(topic).addClass('topic-btn').attr('data-name', topic);
+const gif_topics = (() => {
+  const topics = ['tennis', 'golf', 'table tennis', 'racquetball', 'badminton'];
+  const favorites = [ ];
+  return {
+    generateBtns: () => {
+      for(let topic of topics) {
+        const btn = $('<button>'); 
+        $('header').append(btn);
+        btn.text(topic).addClass('topic-btn').attr('data-name', topic);
+      }  
+    },
+    handleAddBtn: () => {
+      $('#add-topic').on('click', function(e) {
+        $('header').empty();
+        e.preventDefault();
+        const topic = $("#topic-input").val().trim();
+        topics.push(topic);
+        this.generateBtns();
+      });
+    },
+    addFavorite: () => {
+      $(document).on('click', '.gif-container', function() {
+        $('#favorites-section').empty(); 
+        favorites.push({id: $(this).data('id'), url: $(this).data('url')}) 
+        for(let favorite of favorites) {
+          const gifImg = $('<img>');
+          $('#favorites-section').append(gifImg);
+          gifImg.attr('src', favorite.url)
+        }
+      });
+    }
   }
-}
+})();
