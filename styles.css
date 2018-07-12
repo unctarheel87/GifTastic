@@ -1,3 +1,11 @@
+header {
+  margin: 30px;
+}
+
+header .topic-btn {
+  margin: 0 5px;
+}
+
 .site-container {
   display: flex;
 }
@@ -9,11 +17,19 @@
 
 aside {
   flex: 1;
-  margin: 20px;
+  margin: 0 20px;
 }
 
 aside form {
-  margin-top: 200px;
+  margin-top: 30px;
+}
+
+aside #topic-input {
+  width: 70%;
+}
+
+aside h2 {
+  margin-top: 30px;
 }
 
 .gifs {
@@ -26,22 +42,48 @@ aside form {
   position: relative;
 }
 
-.gif-container:hover .favorites-star {
-  opacity: 1;
-  transition: 0.5s ease;
-}
-
-.gif-container:hover img {
-  opacity: 0.5;
-  transition: 0.5s ease;
+#favorites-section img {
+  margin: 10px;
 }
 
 .gif-container .favorites-star {
   position: absolute;
-  opacity: 0;
-  top: 50%;
-  left: 50%;
+  opacity: 0.8;
+  top: 20%;
+  right: 2%;
   color: gold;
-  transform: translate(-50%, -50%);
+  *transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.gif-container .favorites-star:hover {
+  opacity: 1;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
+.gif-container .favorites-star:hover ~ img {
+  opacity: 0.6;
+  transition: 0.5s ease;
+}
+
+.favorite-container {
+  position: relative;
+}
+
+.favorite-container .remove {
+  position: absolute;
+  font-size: 25px;
+  color:white;
+  padding: 0 10px;
+  top: 10%;
+  right: 5%;
+  opacity: 0.7;
+}
+
+.favorite-container .remove:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
