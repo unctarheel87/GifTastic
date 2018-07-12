@@ -23,4 +23,25 @@ aside form {
 
 .gif-container {
   margin: 10px;
+  position: relative;
+}
+
+.gif-container:hover .favorites-star {
+  opacity: 1;
+  transition: 0.5s ease;
+}
+
+.gif-container:hover img {
+  opacity: 0.5;
+  transition: 0.5s ease;
+}
+
+.gif-container .favorites-star {
+  position: absolute;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  color: gold;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }

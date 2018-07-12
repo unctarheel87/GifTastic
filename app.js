@@ -22,24 +22,31 @@ function displayGifInfo() {
         const gifDiv = $('<div>'); 
         const gifImg = $('<img>');
         const gifInfo = $('<div>');
+        const gifStar = $('<div>');
         $('.gifs').append(gifDiv);
-        gifDiv.append(gifInfo).append(gifImg).addClass('gif-container').data({id: gif.id, url: gif.images.fixed_height_still.url});
+        gifDiv.append(gifInfo).append(gifImg).append(gifStar).addClass('gif-container')
+              .data({
+                    id: gif.id, 
+                    url: gif.images.fixed_height_still.url,
+                    isFavorite: false
+                    });
         gifImg.attr('src', gif.images.fixed_height_still.url);
         gifInfo.html(`<p>Rating: ${gif.rating}</p>`);
+        gifStar.html('<i class="far fa-star fa-5x"></i>').addClass('favorites-star');
       }
     });
 }   
 
 const gif_topics = (() => {
   const topics = ['tennis', 'golf', 'table tennis', 'racquetball', 'badminton'];
-  const favorites = [ ];
+  let favorites = [ ];
   return {
     generateBtns: () => {
       for(let topic of topics) {
         const btn = $('<button>'); 
         $('header').append(btn);
         btn.text(topic).addClass('topic-btn').attr('data-name', topic);
-      }  
+      }
     },
     handleAddBtn: () => {
       $('#add-topic').on('click', function(e) {
@@ -52,8 +59,24 @@ const gif_topics = (() => {
     },
     addFavorite: () => {
       $(document).on('click', '.gif-container', function() {
-        $('#favorites-section').empty(); 
-        favorites.push({id: $(this).data('id'), url: $(this).data('url')}) 
+        $('#favorites-section').empty();
+        //set isFavorite Boolean
+        if($(this).data('isFavorite')) {
+          $(this).data('isFavorite', false);
+        } else {
+          $(this).data('isFavorite', true);
+        }
+        //logic based on isFavorite truthy
+        if($(this).data('isFavorite')) {
+          $('.favorites-star', this).html('<i class="fas fa-star fa-5x"></i>');
+          favorites.push({id: $(this).data('id'), url: $(this).data('url')}) 
+        } else {
+          $('.favorites-star', this).html('<i class="far fa-star fa-5x"></i>');
+          favorites = favorites.filter((favorite, index) => {
+            return favorite.id !== $(this).data('id')
+          });
+          console.log(favorites);
+        }  
         for(let favorite of favorites) {
           const gifImg = $('<img>');
           $('#favorites-section').append(gifImg);
