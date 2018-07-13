@@ -22,7 +22,7 @@ const displayGifInfo = (() => {
     //api url
     const api_key = 'f1HGhTafamHISQgK6Wzp4pyRdZDNQfIT';
     const search = $(this).attr('data-name');
-    const queryURL = 'http://api.giphy.com/v1/gifs/search' + 
+    const queryURL = 'https://api.giphy.com/v1/gifs/search' + 
                   '?q=' + search + 
                   '&limit=' + numberOf + 
                   '&api_key=' + api_key
