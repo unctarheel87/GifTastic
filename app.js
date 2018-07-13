@@ -57,7 +57,9 @@ const displayGifInfo = (() => {
 const gif_topics = (() => {
   const topics = ['tennis', 'golf', 'table tennis', 'racquetball', 'badminton'];
   let favorites = [ ];
-  favorites = JSON.parse(localStorage.getItem('favorites'));
+  if(JSON.parse(localStorage.getItem('favorites'))) {
+    favorites = JSON.parse(localStorage.getItem('favorites'));
+  } 
   return {
     generateBtns: () => {
       for(let topic of topics) {
