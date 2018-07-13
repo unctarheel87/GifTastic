@@ -58,6 +58,23 @@ aside h2 {
   text-transform: uppercase;
 }
 
+.green {
+  background: rgba(144, 238, 144, 0.5);
+  padding: 0 5px;
+  border-radius: 3px;
+}
+
+.orange {
+  background:rgba(255, 69, 0, 0.4);
+  padding: 0 5px;
+  border-radius: 3px;
+}
+
+.gif-container p {
+  display: inline-block;
+  margin: 5px;
+}
+
 #favorites-section img {
   margin: 10px;
 }
@@ -68,8 +85,6 @@ aside h2 {
   top: 20%;
   right: 2%;
   color: gold;
-  *transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
   z-index: 2;
 }
 
@@ -95,17 +110,18 @@ aside h2 {
 
 .favorite-container .remove {
   position: absolute;
-  font-size: 22px;
+  font-size: 20px;
   color:white;
-  padding: 0 10px;
-  top: 9%;
-  right: 6%;
+  padding: 0 9px;
+  top: 8%;
+  right: 5%;
   opacity: 0.8;
 }
 
 .favorite-container .remove:hover {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
+  background: rgba(255, 0, 0, 0.5);
+  border-radius: 4px;
+  transition: 0.5s ease;
   cursor: pointer;
 }

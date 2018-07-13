@@ -9,51 +9,61 @@ $(document).ready(function() {
   $(document).on('click', '.topic-btn', displayGifInfo);
 });  
 
-function displayGifInfo() {
-  //api url
-  const api_key = 'f1HGhTafamHISQgK6Wzp4pyRdZDNQfIT';
-  const search = $(this).attr('data-name');
-  const queryURL = 'http://api.giphy.com/v1/gifs/' + 
-                'search?q=' + search + 
-                '&api_key=' + api_key
-  $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then((response) => {
-      $('.gifs').empty();
-      const data = response.data;
-      for(let gif of data) {
-        const gifDiv = $('<div>'); 
-        const gifImg = $('<img>');
-        const gifInfo = $('<div>');
-        const gifStar = $('<div>');
-        $('.gifs').append(gifDiv);
-        gifDiv.append(gifInfo).append(gifImg).prepend(gifStar).addClass('gif-container')
-              .data({
-                    id: gif.id, 
-                    still: gif.images.fixed_height_still.url,
-                    animate: gif.images.fixed_height.url,
-                    state: 'still',
-                    isFavorite: false
-                    });
-        gifImg.attr('src', gif.images.fixed_height_still.url);
-        gifInfo.html(`<p>Rating: <span>${gif.rating}</span></p>`);
-        gifStar.html('<i class="far fa-star fa-2x"></i>').addClass('favorites-star');
-      }
-    });
-}   
+const displayGifInfo = (() => {
+  let numberOf = 0;
+  return function() {
+    //add gifs logic
+    if($(this).data('hasClicked')) {
+      numberOf += 10;
+    } else {
+      numberOf = 10;
+      $(this).data('hasClicked', true);
+    }
+    //api url
+    const api_key = 'f1HGhTafamHISQgK6Wzp4pyRdZDNQfIT';
+    const search = $(this).attr('data-name');
+    const queryURL = 'http://api.giphy.com/v1/gifs/search' + 
+                  '?q=' + search + 
+                  '&limit=' + numberOf + 
+                  '&api_key=' + api_key
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then((response) => {
+        $('.gifs').empty();
+        const data = response.data;
+        for(let gif of data) {
+          const gifDiv = $('<div>'); 
+          const gifImg = $('<img>');
+          const gifInfo = $('<div>');
+          const gifStar = $('<div>');
+          $('.gifs').append(gifDiv);
+          gifDiv.append(gifInfo).append(gifImg).prepend(gifStar).addClass('gif-container')
+                .data({
+                      id: gif.id, 
+                      still: gif.images.fixed_height_still.url,
+                      animate: gif.images.fixed_height.url,
+                      state: 'still',
+                      isFavorite: false
+                      });
+          gifImg.attr('src', gif.images.fixed_height_still.url);
+          gifInfo.html(`<p>Views: ${Math.round(gif._score)}</p><p><span class=${ gif.rating == 'g' || gif.rating == 'pg' ? 'green' : 'orange'}>${gif.rating}</span></p>`);
+          gifStar.html('<i class="far fa-star fa-2x"></i>').addClass('favorites-star');
+        }
+      });
+  }  
+})();   
 
 const gif_topics = (() => {
   const topics = ['tennis', 'golf', 'table tennis', 'racquetball', 'badminton'];
   let favorites = [ ];
   favorites = JSON.parse(localStorage.getItem('favorites'));
-  console.log(favorites);
   return {
     generateBtns: () => {
       for(let topic of topics) {
         const btn = $('<button>'); 
         $('.buttons').append(btn);
-        btn.text(topic).addClass('btn btn-success topic-btn').attr('data-name', topic);
+        btn.text(topic).addClass('btn btn-success topic-btn').attr('data-name', topic).data('hasClicked', false);
       }
     },
     handleAddBtn: () => {
@@ -133,7 +143,6 @@ const gif_topics = (() => {
           $(this).attr('src', $(this).parent().data('still'))
           $(this).parent().data('state', 'still')
         }
-        console.log($(this).parent().data())
       });  
     },
     handleRemoveFavorite: () => {
