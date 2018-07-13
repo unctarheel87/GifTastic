@@ -2,6 +2,7 @@ $(document).ready(function() {
   gif_topics.generateBtns();
   gif_topics.handleAddBtn();
   gif_topics.addFavorite();
+  gif_topics.displayFavorites();
   gif_topics.handleAnimateGif();
   gif_topics.handleAnimateFavorites();
   gif_topics.handleRemoveFavorite();
@@ -45,6 +46,8 @@ function displayGifInfo() {
 const gif_topics = (() => {
   const topics = ['tennis', 'golf', 'table tennis', 'racquetball', 'badminton'];
   let favorites = [ ];
+  favorites = JSON.parse(localStorage.getItem('favorites'));
+  console.log(favorites);
   return {
     generateBtns: () => {
       for(let topic of topics) {
@@ -64,7 +67,6 @@ const gif_topics = (() => {
     },
     addFavorite: () => {
       $(document).on('click', '.favorites-star', function() {
-        $('#favorites-section').empty();
         //set isFavorite Boolean
         if($(this).parent().data('isFavorite')) {
           $(this).parent().data('isFavorite', false);
@@ -79,29 +81,34 @@ const gif_topics = (() => {
                           still: $(this).parent().data('still'),
                           animate: $(this).parent().data('animate'),
                           state: $(this).parent().data('state'),
-                        }) 
+                        })
+        localStorage.setItem('favorites', JSON.stringify(favorites));                 
         } else {
           $(this).html('<i class="far fa-star fa-2x"></i>');
           favorites = favorites.filter((favorite) => {
             return favorite.id !== $(this).parent().data('id')
           });
+          localStorage.setItem('favorites', JSON.stringify(favorites));  
         }
-        // display favorites  
-        for(let favorite of favorites) {
-          const gifDiv = $('<div>');
-          const gifImg = $('<img>');
-          const remove = $('<span>');
-          $('#favorites-section').append(gifDiv);
-          gifDiv.append(remove).addClass('favorite-container').append(gifImg).data({
-                                      id: favorite.id,
-                                      still: favorite.still, 
-                                      animate: favorite.animate, 
-                                      state: favorite.state 
-                                    });
-          gifImg.attr('src', favorite.still);
-          remove.text('X').addClass('remove')
-        }
+        gif_topics.displayFavorites();
       });
+    },
+    displayFavorites: () => {
+      $('#favorites-section').empty();
+      for(let favorite of favorites) {
+        const gifDiv = $('<div>');
+        const gifImg = $('<img>');
+        const remove = $('<span>');
+        $('#favorites-section').append(gifDiv);
+        gifDiv.append(remove).addClass('favorite-container').append(gifImg).data({
+                                    id: favorite.id,
+                                    still: favorite.still, 
+                                    animate: favorite.animate, 
+                                    state: favorite.state 
+                                  });
+        gifImg.attr('src', favorite.still);
+        remove.text('X').addClass('remove')
+      }
     },
     handleAnimateGif: () => {
       $(document).on("click", ".gif-container img", function() {
@@ -131,10 +138,19 @@ const gif_topics = (() => {
     },
     handleRemoveFavorite: () => {
       $(document).on("click", ".remove", function() {
+        const id = $(this).parent().data('id');
         favorites = favorites.filter((favorite) => {
-          return favorite.id !== $(this).parent().data('id');
+          return favorite.id !== id
         });
-        console.log(favorites)
+        localStorage.removeItem('favorites');
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        $('.gif-container').each(function() {
+          if($(this).data('id') === id) {
+            $(this).data('isFavorite', false);
+            $('.favorites-star', this).html('<i class="far fa-star fa-2x"></i>');
+          }
+        });
+        gif_topics.displayFavorites();
       });
     }
   }

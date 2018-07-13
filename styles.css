@@ -68,22 +68,28 @@ aside h2 {
   transition: 0.5s ease;
 }
 
+#favorites-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .favorite-container {
   position: relative;
 }
 
 .favorite-container .remove {
   position: absolute;
-  font-size: 25px;
+  font-size: 22px;
   color:white;
   padding: 0 10px;
-  top: 10%;
-  right: 5%;
-  opacity: 0.7;
+  top: 9%;
+  right: 6%;
+  opacity: 0.8;
 }
 
 .favorite-container .remove:hover {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
   cursor: pointer;
 }
