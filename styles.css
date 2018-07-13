@@ -1,9 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=ABeeZee');
+
+body {
+  font-family: 'ABeeZee', sans-serif;
+}
+
 header {
+  display: flex;
+  justify-content: space-between;
   margin: 30px;
 }
 
 header .topic-btn {
-  margin: 0 5px;
+  margin: 5px;
+}
+
+header h3 {
+  width: 500px;
 }
 
 .site-container {
@@ -38,8 +50,12 @@ aside h2 {
 }
 
 .gif-container {
-  margin: 10px;
+  margin: 20px 10px;
   position: relative;
+}
+
+.gif-container span {
+  text-transform: uppercase;
 }
 
 #favorites-section img {

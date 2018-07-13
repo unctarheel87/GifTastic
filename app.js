@@ -37,7 +37,7 @@ function displayGifInfo() {
                     isFavorite: false
                     });
         gifImg.attr('src', gif.images.fixed_height_still.url);
-        gifInfo.html(`<p>Rating: ${gif.rating}</p>`);
+        gifInfo.html(`<p>Rating: <span>${gif.rating}</span></p>`);
         gifStar.html('<i class="far fa-star fa-2x"></i>').addClass('favorites-star');
       }
     });
@@ -52,13 +52,13 @@ const gif_topics = (() => {
     generateBtns: () => {
       for(let topic of topics) {
         const btn = $('<button>'); 
-        $('header').append(btn);
-        btn.text(topic).addClass('btn btn-primary topic-btn').attr('data-name', topic);
+        $('.buttons').append(btn);
+        btn.text(topic).addClass('btn btn-success topic-btn').attr('data-name', topic);
       }
     },
     handleAddBtn: () => {
       $('#add-topic').on('click', function(e) {
-        $('header').empty();
+        $('.buttons').empty();
         e.preventDefault();
         const topic = $("#topic-input").val().trim();
         topics.push(topic);
